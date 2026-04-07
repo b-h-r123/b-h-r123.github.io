@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人主页 | 开发者名</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --text-color: #c9d1d9;
+            --accent-color: #58a6ff;
+            --card-bg: #161b22;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            border: 1px solid #30363d;
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        h1 { margin: 10px 0; color: #fff; font-size: 1.8rem; }
+        p { color: #8b949e; margin-bottom: 25px; }
+
+        .tags {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .tag {
+            background: rgba(88, 166, 255, 0.1);
+            color: var(--accent-color);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(88, 166, 255, 0.2);
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .link-btn {
+            background: #21262d;
+            color: #c9d1d9;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #30363d;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .link-btn:hover {
+            background: #30363d;
+            border-color: #8b949e;
+            transform: translateY(-2px);
+        }
+
+        .highlight {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        footer {
+            margin-top: 40px;
+            font-size: 0.8rem;
+            color: #484f58;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <img src="https://github.com/你的用户名.png" alt="Profile" class="profile-img">
+
+    <h1>你好，我是 [你的名字]</h1>
+    <p>正在探索游戏开发与软件工程的大学生</p>
+
+    <div class="tags">
+        <span class="tag">Godot Engine</span>
+        <span class="tag">C# / .NET</span>
+        <span class="tag">Game Dev</span>
+        <span class="tag">Embedded Systems</span>
+    </div>
+
+    <div class="links">
+        <a href="https://github.com/你的用户名" class="link-btn highlight" target="_blank">
+            🐙 我的 GitHub 仓库
+        </a>
+        <a href="#" class="link-btn">🎮 我的游戏作品 (Coming Soon)</a>
+        <a href="mailto:your-email@example.com" class="link-btn">📧 联系我</a>
+    </div>
+
+    <footer>
+        &copy; 2026 Powered by GitHub Pages
+    </footer>
+</div>
+
+</body>
+</html>
