@@ -6,11 +6,11 @@
     <title>个人主页 | BHR</title>
     <style>
         :root {
-            /* 调整为更深邃的背景色，以衬托玻璃质感 */
-            --bg-gradient: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+            /* 深邃宇宙背景色 */
+            --bg-gradient: linear-gradient(135deg, #050811 0%, #0d1117 100%);
             --accent-color: #58a6ff;
-            --glass-bg: rgba(22, 27, 34, 0.7); /* 半透明背景 */
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(13, 17, 23, 0.65); /* 稍微提高透明度增强通透感 */
+            --glass-border: rgba(255, 255, 255, 0.08);
             --text-main: #f0f6fc;
             --text-dim: #8b949e;
         }
@@ -24,19 +24,75 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden; /* 防止背景装饰溢出 */
+            overflow: hidden; 
+            perspective: 1000px; /* 为3D倾斜做准备 */
         }
 
-        /* 增加一些背景装饰物，强化玻璃的透视感 */
-        body::before {
+        /* --- 纯CSS太空星空背景层 --- */
+        .stars-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -2;
+            overflow: hidden;
+        }
+        /* 星闪动画 */
+        @keyframes blink {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        /* 星云呼吸动画 */
+        @keyframes nebula-pulse {
+            0%, 100% { transform: scale(1) translate(0, 0); opacity: 0.4; }
+            50% { transform: scale(1.1) translate(-20px, 20px); opacity: 0.6; }
+        }
+        /* 背景星云装饰物 */
+        .stars-container::before {
             content: "";
             position: absolute;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(88, 166, 255, 0.15) 0%, transparent 70%);
-            top: 10%;
-            left: 10%;
-            z-index: -1;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(88, 166, 255, 0.12) 0%, rgba(139, 92, 246, 0.05) 50%, transparent 70%);
+            top: -10%;
+            left: -10%;
+            animation: nebula-pulse 15s infinite ease-in-out;
+        }
+        .stars-container::after {
+            content: "";
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.05) 0%, transparent 60%);
+            bottom: 10%;
+            right: -5%;
+            animation: nebula-pulse 12s infinite ease-in-out reverse;
+        }
+        /* 生成繁星点点 */
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: blink 3s infinite ease-in-out;
+        }
+
+        /* --- 主容器与流光边框 --- */
+        .card-wrapper {
+            position: relative;
+            padding: 2px; /* 留出空隙给流光边框 */
+            border-radius: 26px;
+            background: linear-gradient(135deg, rgba(88, 166, 255, 0.3), transparent, rgba(139, 92, 246, 0.3));
+            background-size: 200% 200%;
+            animation: border-flow 8s linear infinite;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+            transition: transform 0.1s ease-out; /* 让JS的倾斜更平滑 */
+            will-change: transform;
+        }
+        @keyframes border-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .container {
@@ -44,65 +100,70 @@
             max-width: 450px;
             text-align: center;
             padding: 50px 30px;
+            box-sizing: border-box;
             
             /* 核心：玻璃拟态效果 */
             background: var(--glass-bg);
-            backdrop-filter: blur(12px); /* 背景模糊 */
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(20px); /* 调高模糊值增强科幻感 */
+            -webkit-backdrop-filter: blur(20px);
             border-radius: 24px;
             border: 1px solid var(--glass-border);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            
-            transition: transform 0.3s ease;
         }
 
+        /* --- 头像呼吸呼吸感 --- */
         .profile-img {
             width: 110px;
             height: 110px;
             border-radius: 50%;
-            border: 2px solid var(--glass-border);
-            padding: 5px; /* 留白产生呼吸感 */
-            background: linear-gradient(45deg, var(--accent-color), transparent);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            padding: 5px; 
+            background: linear-gradient(45deg, var(--accent-color), #8b5cf6);
             margin-bottom: 20px;
             object-fit: cover;
             transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: img-float 4s infinite ease-in-out;
         }
-
+        @keyframes img-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
         .profile-img:hover {
-            transform: rotate(10deg) scale(1.05);
+            transform: rotate(15deg) scale(1.08);
         }
 
         h1 { font-size: 1.6rem; margin: 10px 0; letter-spacing: 1px; }
         p { color: var(--text-dim); font-size: 0.95rem; margin-bottom: 30px; }
 
+        /* --- 标签微动 --- */
         .tags {
             display: flex;
             justify-content: center;
             gap: 8px;
             margin-bottom: 35px;
+            flex-wrap: wrap;
         }
-
         .tag {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 5px 14px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 6px 14px;
             border-radius: 12px;
             font-size: 0.75rem;
             color: var(--accent-color);
-            border: 1px solid rgba(88, 166, 255, 0.3);
-            transition: all 0.3s ease;
+            border: 1px solid rgba(88, 166, 255, 0.25);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
-
         .tag:hover {
-            background: rgba(88, 166, 255, 0.2);
-            transform: translateY(-2px);
+            background: rgba(88, 166, 255, 0.15);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 12px rgba(88, 166, 255, 0.3);
+            transform: translateY(-3px) scale(1.05);
         }
 
+        /* --- 链接按钮流光与弹性反馈 --- */
         .links {
             display: flex;
             flex-direction: column;
             gap: 16px;
         }
-
         .link-btn {
             position: relative;
             background: rgba(255, 255, 255, 0.03);
@@ -114,62 +175,136 @@
             font-size: 0.9rem;
             font-weight: 500;
             overflow: hidden;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
-
-        /* 悬停效果 */
+        /* 按钮高光扫掠效果 */
+        .link-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: skewX(-25deg);
+            transition: none;
+        }
+        .link-btn:hover::before {
+            left: 150%;
+            transition: left 0.6s ease-in-out;
+        }
         .link-btn:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.25);
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
-
-        /* 点击反馈效果：缩放 */
         .link-btn:active {
-            transform: translateY(0) scale(0.97);
-            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-1px) scale(0.98);
+            background: rgba(255, 255, 255, 0.1);
         }
 
+        /* 特殊高亮按钮 */
         .highlight {
-            border: 1px solid var(--accent-color);
-            box-shadow: 0 0 15px rgba(88, 101, 242, 0.1);
+            border: 1px solid rgba(88, 166, 255, 0.5);
+            background: rgba(88, 166, 255, 0.05);
+            box-shadow: 0 0 15px rgba(88, 166, 255, 0.05);
+        }
+        .highlight:hover {
+            background: rgba(88, 166, 255, 0.12);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 20px rgba(88, 166, 255, 0.2);
         }
 
         footer {
             margin-top: 50px;
             font-size: 0.75rem;
             color: #484f58;
+            letter-spacing: 0.5px;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <img src="https://github.com/b-h-r123.png" alt="Profile" class="profile-img">
+<!-- 星空背景层 -->
+<div class="stars-container" id="starsContainer"></div>
 
-    <h1>你好，我是 BHR</h1>
-    <p>探索有意思的科技与开发的大学生</p>
+<!-- 增加一层包装以实现3D倾斜和流光边框 -->
+<div class="card-wrapper" id="tiltCard">
+    <div class="container">
+        <img src="https://github.com/b-h-r123.png" alt="Profile" class="profile-img">
 
-    <div class="tags">
-        <span class="tag">Aerospace</span>
-        <span class="tag">Godot</span>
-        <span class="tag">Unity</span>
-        <span class="tag">Arduino</span>
+        <h1>你好，我是 BHR</h1>
+        <p>探索有意思的科技与开发的大学生</p>
+
+        <div class="tags">
+            <span class="tag">Aerospace</span>
+            <span class="tag">Godot</span>
+            <span class="tag">Unity</span>
+            <span class="tag">Arduino</span>
+        </div>
+
+        <div class="links">
+            <a href="https://github.com/b-h-r123" class="link-btn highlight" target="_blank">
+                <span>🐙 GitHub Home Page</span>
+            </a>
+            <a href="#" class="link-btn">🎮 Game Works</a>
+            <a href="mailto:yxx0012230821@163.com" class="link-btn">📧 Contact Me</a>
+        </div>
+
+        <footer>
+            &copy; 2026 Crafted by BHR
+        </footer>
     </div>
-
-    <div class="links">
-        <a href="https://github.com/b-h-r123" class="link-btn highlight" target="_blank">
-            <span>🐙 GitHub Home Page</span>
-        </a>
-        <a href="#" class="link-btn">🎮 Game Works</a>
-        <a href="mailto:yxx0012230821@163.com" class="link-btn">📧 Contact Me</a>
-    </div>
-
-    <footer>
-        &copy; 2026 Crafted by BHR
-    </footer>
 </div>
+
+<script>
+    // 1. 动态生成随机微闪星星
+    const container = document.getElementById('starsContainer');
+    const starCount = 60; // 星星数量
+    for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        // 随机大小（1px 到 3px）
+        const size = Math.random() * 2 + 1;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        // 随机位置
+        star.style.top = `${Math.random() * 100}%`;
+        star.style.left = `${Math.random() * 100}%`;
+        // 随机闪烁延迟
+        star.style.animationDelay = `${Math.random() * 3}s`;
+        star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+        container.appendChild(star);
+    }
+
+    // 2. 灵动的鼠标悬浮 3D 倾斜交互
+    const card = document.getElementById('tiltCard');
+    const containerBody = document.body;
+
+    containerBody.addEventListener('mousemove', (e) => {
+        const x = e.clientX;
+        const y = e.clientY;
+        
+        // 计算鼠标相对屏幕中心的位置
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        
+        // 限制最大倾斜角度在 8 度以内，保持优雅自然
+        const rotateX = ((centerY - y) / centerY) * 8;
+        const rotateY = ((x - centerX) / centerX) * 8;
+
+        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    // 鼠标离开时平滑复位
+    containerBody.addEventListener('mouseleave', () => {
+        card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        card.style.transition = 'transform 0.5s ease';
+    });
+    
+    card.addEventListener('mouseenter', () => {
+        card.style.transition = 'transform 0.1s ease-out';
+    });
+</script>
 
 </body>
 </html>
