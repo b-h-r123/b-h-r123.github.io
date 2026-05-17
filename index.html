@@ -6,7 +6,7 @@
     <title>个人主页 | BHR</title>
     <style>
         :root {
-            /* 2001太空漫游风格：极冷灰黑、深邃暗蓝、以及经典的 HAL 9000 发光红 */
+            /* 2001太空漫游风格色彩体系 */
             --bg-color: #030508;
             --accent-color: #58a6ff;
             --hal-red: #ff3333;
@@ -17,7 +17,8 @@
         }
 
         body {
-            font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            /* 引入更具现代科技感的字体族 */
+            font-family: "Segoe UI Light", "Helvetica Neue", "Century Gothic", sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             margin: 0;
@@ -26,10 +27,10 @@
             align-items: center;
             min-height: 100vh;
             overflow: hidden; 
-            perspective: 1200px;
+            perspective: 1000px;
         }
 
-        /* --- 纯 CSS 打造：Discovery One 飞船内舱与 HAL9000 意象背景 --- */
+        /* --- 背景图片配置 --- */
         .spaceship-bg {
             position: absolute;
             width: 100%;
@@ -37,15 +38,14 @@
             top: 0;
             left: 0;
             z-index: -2;
-            background: 
-                /* 模拟飞船走廊的纵深透视网格线 */
-                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px) 0 0 / 50px 50px,
-                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px) 0 0 / 50px 50px,
-                /* 飞船舱室的结构光影 */
-                radial-gradient(circle at 50% 50%, transparent 30%, #000 80%);
+            /* 🎨 这里直接读取同级目录下的图片 */
+            background: url('bg-space.jpg') no-repeat center center;
+            background-size: cover;
+            /* 电影感调色：调暗背景以凸显前端玻璃面板，并加入一丝冷色调 */
+            filter: brightness(0.35) contrast(1.1); 
         }
 
-        /* HAL 9000 经典的红色摄像眼（氛围灯效） */
+        /* HAL 9000 经典的红色光晕，与背景图叠加融合，科幻感拉满 */
         .hal-eye {
             position: absolute;
             top: 15%;
@@ -53,114 +53,97 @@
             transform: translateX(-50%);
             width: 400px;
             height: 400px;
-            background: radial-gradient(circle, rgba(255, 51, 51, 0.15) 0%, rgba(255, 102, 0, 0.05) 40%, transparent 70%);
+            background: radial-gradient(circle, rgba(255, 51, 51, 0.12) 0%, rgba(255, 102, 0, 0.03) 50%, transparent 70%);
             z-index: -1;
             pointer-events: none;
             animation: hal-glow 6s infinite ease-in-out;
         }
         @keyframes hal-glow {
-            0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
-            50% { opacity: 0.9; transform: translateX(-50%) scale(1.1); }
+            0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+            50% { opacity: 0.8; transform: translateX(-50%) scale(1.08); }
         }
 
-        /* --- 主容器：拓宽至 700px 并改为现代双栏/宽屏布局 --- */
+        /* --- 主容器：精准锁定 530px 宽度 --- */
         .card-wrapper {
             position: relative;
             padding: 1px; 
-            border-radius: 16px;
-            /* 飞船仪表盘质感的微弱外框 */
+            border-radius: 20px;
             background: linear-gradient(180deg, rgba(255,255,255,0.15), rgba(255,255,255,0.02));
-            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255,255,255,0.05);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7);
             transition: transform 0.1s ease-out;
             will-change: transform;
             width: 90%;
-            max-width: 750px; /* 显着加宽 */
+            max-width: 530px; /* 完美契合 530px 宽度 */
         }
 
         .container {
-            padding: 45px 40px;
+            padding: 45px 35px;
             box-sizing: border-box;
             background: var(--glass-bg);
             backdrop-filter: blur(25px); 
             -webkit-backdrop-filter: blur(25px);
-            border-radius: 15px;
-            
-            /* 引入 Grid 布局，将主体分为左右两部分 */
-            display: grid;
-            grid-template-columns: 1.2s 1.8fr;
-            gap: 40px;
-            align-items: center;
+            border-radius: 19px;
+            text-align: center;
         }
 
-        /* 当屏幕较小时自动切换回单栏，保证手机端完美显示 */
-        @media (max-width: 650px) {
-            .container {
-                grid-template-columns: 1fr;
-                gap: 20px;
-                padding: 40px 24px;
-                text-align: center;
-            }
-            .left-panel { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 20px; }
-        }
-
-        /* 左侧面板：个人信息 */
-        .left-panel {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border-right: 1px solid rgba(255, 255, 255, 0.08);
-            padding-right: 20px;
-        }
-
+        /* 头像与个人信息 */
         .profile-img {
-            width: 120px;
-            height: 120px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            padding: 4px; 
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            padding: 5px; 
             background: linear-gradient(135deg, var(--accent-color), var(--hal-red));
             object-fit: cover;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.2);
         }
         .profile-img:hover {
-            transform: scale(1.08) rotate(5deg);
+            transform: scale(1.06) rotate(8deg);
         }
 
-        h1 { font-size: 1.7rem; margin: 20px 0 10px 0; letter-spacing: 1px; font-weight: 600; }
-        .subtitle { color: var(--text-dim); font-size: 0.95rem; margin: 0; line-height: 1.5; }
-
-        /* 右侧面板：标签与链接终端 */
-        .right-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
+        h1 { 
+            font-size: 1.65rem; 
+            margin: 15px 0 8px 0; 
+            letter-spacing: 2px; 
+            font-weight: 400;
+        }
+        .subtitle { 
+            color: var(--text-dim); 
+            font-size: 0.92rem; 
+            margin-bottom: 30px; 
+            letter-spacing: 0.5px;
         }
 
-        /* 标签：更具仪表盘按钮质感 */
+        /* --- 标签字体及样式高级化修改 --- */
         .tags {
             display: flex;
+            justify-content: center;
             gap: 10px;
+            margin-bottom: 35px;
             flex-wrap: wrap;
         }
         .tag {
             background: rgba(255, 255, 255, 0.02);
-            padding: 6px 16px;
-            border-radius: 6px; /* 稍微方正一点，更有工业/科学仪器的硬朗感 */
+            padding: 5px 14px;
+            border-radius: 4px; /* 稍微硬朗的微小弧度 */
             font-size: 0.75rem;
-            color: #c9d1d9;
-            font-family: "Courier New", Courier, monospace; /* 代码/仪器风格字体 */
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            transition: all 0.25s ease;
+            /* 采用时尚、高冷的科幻无衬线字体，大写更具高级感 */
+            font-family: "Eurostile", "Futura", "Segoe UI", sans-serif;
+            text-transform: uppercase; 
+            letter-spacing: 1.5px;
+            color: #d1d5db;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .tag:hover {
             border-color: var(--accent-color);
             color: var(--accent-color);
-            background: rgba(88, 166, 255, 0.05);
-            box-shadow: 0 0 10px rgba(88, 166, 255, 0.2);
+            background: rgba(88, 166, 255, 0.08);
+            box-shadow: 0 0 12px rgba(88, 166, 255, 0.25);
             transform: translateY(-2px);
         }
 
-        /* 链接按钮：太空舱控制面板风格 */
+        /* --- 链接控制台 --- */
         .links {
             display: flex;
             flex-direction: column;
@@ -177,16 +160,14 @@
             font-size: 0.9rem;
             font-weight: 500;
             display: flex;
-            justify-content: space-between; /* 两端对齐，更显大气 */
+            justify-content: space-between;
             align-items: center;
             overflow: hidden;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
-        /* 右侧加一个小箭头提示 */
         .link-btn::after {
             content: '→';
-            font-family: monospace;
-            opacity: 0.5;
+            opacity: 0.4;
             transition: transform 0.3s ease, opacity 0.3s ease;
         }
         .link-btn:hover::after {
@@ -208,17 +189,18 @@
         }
         .link-btn:hover {
             background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transform: translateY(-2px);
         }
         .link-btn:active {
-            transform: scale(0.99);
+            transform: scale(0.99) translateY(-1px);
             background: rgba(255, 255, 255, 0.08);
         }
 
         .highlight {
-            border: 1px solid rgba(88, 166, 255, 0.4);
-            background: rgba(88, 166, 255, 0.03);
+            border: 1px solid rgba(88, 166, 255, 0.35);
+            background: rgba(88, 166, 255, 0.02);
         }
         .highlight:hover {
             border-color: var(--accent-color);
@@ -227,61 +209,54 @@
         }
 
         footer {
-            grid-column: 1 / -1; /* 横跨两栏 */
-            margin-top: 20px;
-            font-size: 0.75rem;
+            margin-top: 40px;
+            font-size: 0.72rem;
             color: #484f58;
-            text-align: center;
             border-top: 1px solid rgba(255,255,255,0.05);
             padding-top: 20px;
-            font-family: monospace;
+            letter-spacing: 1px;
         }
     </style>
 </head>
 <body>
 
-<!-- 飞船走廊与 HAL9000 光效背景 -->
+<!-- 飞船舱室背景图层 -->
 <div class="spaceship-bg"></div>
 <div class="hal-eye"></div>
 
-<!-- 拓宽后的 3D 终端卡片 -->
+<!-- 精准 530px 宽度的终端面板 -->
 <div class="card-wrapper" id="tiltCard">
     <div class="container">
         
-        <!-- 左栏：身份舱 -->
-        <div class="left-panel">
-            <img src="https://github.com/b-h-r123.png" alt="Profile" class="profile-img">
-            <h1>BHR</h1>
-            <p class="subtitle">探索有意思的科技与开发的大学生</p>
+        <img src="https://github.com/b-h-r123.png" alt="Profile" class="profile-img">
+        <h1>你好，我是 BHR</h1>
+        <div class="subtitle">探索有意思的科技与开发的大学生</div>
+
+        <!-- 优化字体的科技感标签 -->
+        <div class="tags">
+            <span class="tag">Aerospace</span>
+            <span class="tag">Godot</span>
+            <span class="tag">Unity</span>
+            <span class="tag">Arduino</span>
         </div>
 
-        <!-- 右栏：控制台 -->
-        <div class="right-panel">
-            <div class="tags">
-                <span class="tag">[ Aerospace ]</span>
-                <span class="tag">[ Godot ]</span>
-                <span class="tag">[ Unity ]</span>
-                <span class="tag">[ Arduino ]</span>
-            </div>
-
-            <div class="links">
-                <a href="https://github.com/b-h-r123" class="link-btn highlight" target="_blank">
-                    <span>🐙 GitHub Home Page</span>
-                </a>
-                <a href="#" class="link-btn">🎮 Game Works</a>
-                <a href="mailto:yxx0012230821@163.com" class="link-btn">📧 Contact Me</a>
-            </div>
+        <!-- 交互链接 -->
+        <div class="links">
+            <a href="https://github.com/b-h-r123" class="link-btn highlight" target="_blank">
+                <span>🐙 GitHub Home Page</span>
+            </a>
+            <a href="#" class="link-btn">🎮 Game Works</a>
+            <a href="mailto:yxx0012230821@163.com" class="link-btn">📧 Contact Me</a>
         </div>
 
-        <!-- 底部信息 -->
         <footer>
-            SYSTEM STATUS: ONLINE // &copy; 2026 Crafted by BHR
+            &copy; 2026 Crafted by BHR // SYS ACTIVE
         </footer>
     </div>
 </div>
 
 <script>
-    // 灵动的鼠标悬浮 3D 倾斜交互
+    // 鼠标悬浮 3D 倾斜交互
     const card = document.getElementById('tiltCard');
     const containerBody = document.body;
 
@@ -292,9 +267,9 @@
         const centerX = window.innerWidth / 2;
         const centerY = window.innerHeight / 2;
         
-        // 针对加宽后的卡片，适当减小Y轴旋转敏感度，让大卡片倾斜显得更沉稳、厚重
-        const rotateX = ((centerY - y) / centerY) * 5;
-        const rotateY = ((x - centerX) / centerX) * 5;
+        // 530px 尺寸下，6度的最大倾斜角能够呈现最灵动细腻的悬浮感
+        const rotateX = ((centerY - y) / centerY) * 6;
+        const rotateY = ((x - centerX) / centerX) * 6;
 
         card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     });
